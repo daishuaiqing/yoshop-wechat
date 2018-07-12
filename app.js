@@ -36,7 +36,8 @@ App({
    * 设置api地址
    */
   setApiRoot: function () {
-    this.api_root = this.siteInfo.siteroot + 'index.php?s=/api/';
+    let siteroot = this.siteInfo.siteroot.replace('app/index.php', '');
+    this.api_root = siteroot + 'addons/yiovo_shop/web/index.php?s=/api/';
   },
 
   /**
