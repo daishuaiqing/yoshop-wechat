@@ -4,7 +4,7 @@
 .index-search-box {
   position: unset;
   background: #f1f1f2;
-  padding: 10px 0;
+  padding: 10px 24rpx ;
 }
 
 .index-search-box .index-search {
