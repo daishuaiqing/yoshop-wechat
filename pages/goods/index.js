@@ -24,7 +24,7 @@ Page({
     stock_num: 0, // 库存数量
 
     goods_num: 1, // 商品数量
-    goods_spec_id: 0, // 规格id
+    goods_sku_id: 0, // 规格id
     cart_total_num: 0, // 购物车商品总数量
     specData: {}, // 多规格信息
   },
@@ -51,13 +51,9 @@ Page({
     App._get('goods/detail', {
       goods_id: _this.data.goods_id
     }, function(result) {
-      if (result.code === 1) {
-        // 初始化商品详情数据
-        let data = _this.initGoodsDetailData(result.data);
-        _this.setData(data);
-      } else {
-        App.showError(result.msg);
-      }
+      // 初始化商品详情数据
+      let data = _this.initGoodsDetailData(result.data);
+      _this.setData(data);
     });
   },
 
@@ -71,7 +67,7 @@ Page({
       wxParse.wxParse('content', 'html', data.detail.content, _this, 0);
     }
     // 商品价格/划线价/库存
-    data.goods_spec_id = data.detail.spec[0].goods_spec_id;
+    data.goods_sku_id = data.detail.spec[0].spec_sku_id;
     data.goods_price = data.detail.spec[0].goods_price;
     data.line_price = data.detail.spec[0].line_price;
     data.stock_num = data.detail.spec[0].stock_num;
@@ -134,11 +130,11 @@ Page({
         return val.spec_sku_id == spec_sku_id;
       });
 
-    // 记录goods_spec_id
+    // 记录goods_sku_id
     // 更新商品价格、划线价、库存
     if (typeof skuItem === 'object') {
       this.setData({
-        goods_spec_id: skuItem.goods_spec_id,
+        goods_sku_id: skuItem.spec_sku_id,
         goods_price: skuItem.form.goods_price,
         line_price: skuItem.form.line_price,
         stock_num: skuItem.form.stock_num,
@@ -247,7 +243,7 @@ Page({
           order_type: 'buyNow',
           goods_id: _this.data.goods_id,
           goods_num: _this.data.goods_num,
-          goods_spec_id: _this.data.goods_spec_id,
+          goods_sku_id: _this.data.goods_sku_id,
         })
       });
     } else if (submitType === 'addCart') {
@@ -255,14 +251,10 @@ Page({
       App._post_form('cart/add', {
         goods_id: _this.data.goods_id,
         goods_num: _this.data.goods_num,
-        goods_spec_id: _this.data.goods_spec_id,
+        goods_sku_id: _this.data.goods_sku_id,
       }, function(result) {
-        if (result.code === 1) {
-          App.showSuccess(result.msg);
-          _this.setData(result.data);
-        } else {
-          App.showError(result.msg);
-        }
+        App.showSuccess(result.msg);
+        _this.setData(result.data);
       });
     }
   },
